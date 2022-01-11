@@ -43,4 +43,21 @@ public class PlatformController : ControllerBase
 
         return NotFound();
     }
+    
+    [HttpPost]
+    public ActionResult<PlatformReadDto> CreatePlatform(PlatformCreateDto platformCreateDto)
+    {
+        Console.WriteLine("--> Creating a platform...");
+
+        var platform = _mapper.Map<Platform>(platformCreateDto);
+        _repository.CreatePlatform(platform);
+        _repository.SaveChanges();
+
+        var platformReadDto = _mapper.Map<PlatformReadDto>(platform);
+
+        // return Ok(platformReadDto);
+        
+        // in order to get location in result headers
+        return CreatedAtRoute(nameof(GetPlatformById), new {platformReadDto.Id}, platformReadDto);
+    }
 }
