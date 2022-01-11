@@ -28,4 +28,19 @@ public class PlatformController : ControllerBase
 
         return Ok(_mapper.Map<IEnumerable<Platform>>(allPlatforms));
     }
+    
+    [HttpGet("{id}", Name = "GetPlatformById")]
+    public ActionResult<PlatformReadDto> GetPlatformById(int id)
+    {
+        Console.WriteLine("--> Getting Platforms by ID...");
+
+        var platformItem = _repository.GetPlatformById(id);
+
+        if (platformItem != null)
+        {
+            return Ok(_mapper.Map<Platform>(platformItem));    
+        }
+
+        return NotFound();
+    }
 }
